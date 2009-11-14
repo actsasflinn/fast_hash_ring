@@ -1,0 +1,31 @@
+= fast_hash_ring
+
+== Background
+
+fast_hash_ring is a Ruby C extension implementation of consistent hashing. 
+fast_hash_ring is based on the Ruby code Mitchell Hashimoto ported from 
+original Python code written by Amir Salihefendic. A comprehensive blog 
+post detailing the methods and reasoning for such a library can be viewed 
+by visiting the following URL:
+
+http://amix.dk/blog/viewEntry/19367
+
+== Usage
+
+  require 'rubygems'
+  require 'fast_hash_ring'
+
+  memcache_servers = ['192.168.0.111:14107',
+                      '192.168.0.112:14107',
+                      '192.168.0.113:14108']
+ 
+  # Since server 1 has double the RAM, lets weight it
+  # twice as much to get twice the keys. This is optional
+  weights = { '192.168.0.111' => 2 }
+
+  ring = FastHashRing.new(memcache_servers, weights)
+  server = ring.get_node('my_key')
+
+== Installation
+
+  sudo gem install fast_hash_ring --source=http://gemcutter.org

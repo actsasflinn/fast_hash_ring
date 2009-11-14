@@ -1,0 +1,12 @@
+======================================
+= fast_hash_ring credits                  =
+======================================
+
+Original Author (Python Implementation):
+  Amir Salihefendic http://amix.dk
+
+Ported to Ruby by:
+  Mitchell Hashimoto http://mitchellhashimoto.com
+
+Ported to C Ruby Extension by:
+  Flinn Mueller http://actsasflinn.com
