@@ -152,7 +152,7 @@ static VALUE cFastHashRing_initialize(int argc, VALUE *argv, VALUE vself){
 
   rb_scan_args(argc, argv, "11", &vnodes, &vweights);
 
-  if(NIL_P(vweights)) vweights = rb_ary_new();
+  if(NIL_P(vweights)) vweights = rb_hash_new();
   vring = rb_hash_new();
   vsorted_keys = rb_ary_new();
 
