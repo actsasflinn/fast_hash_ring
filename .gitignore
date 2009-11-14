@@ -1,0 +1,9 @@
+.DS_Store
+Makefile
+*.log
+*.bundle
+*.o
+.\#*
+tmp/*
+pkg/*
+html/*
