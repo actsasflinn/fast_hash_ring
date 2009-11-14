@@ -47,10 +47,11 @@ static VALUE cFastHashRing_generate_circle(VALUE vself){
     int factor = floor((40 * vnodes_len * weight) / total_weight);
     for(j = 0;j < factor;j++){
       int blen = 0;
-      blen += strlen(RSTRING_PTR(vnode));
+      VALUE vstring = rb_convert_type(vnode, T_STRING, "String", "to_s");
+      blen += strlen(RSTRING_PTR(vstring));
       blen += 12;
       char key[blen];
-      sprintf(key, "%s-%d", RSTRING_PTR(vnode), j);
+      sprintf(key, "%s-%d", RSTRING_PTR(vstring), j);
 
       for(n=0;n<3;n++){
         unsigned int hkey = hash_val(key, n*4);
@@ -152,6 +153,8 @@ static VALUE cFastHashRing_initialize(int argc, VALUE *argv, VALUE vself){
 
   rb_scan_args(argc, argv, "11", &vnodes, &vweights);
 
+  if(TYPE(vnodes) != T_ARRAY) vnodes = rb_ary_new3(1, vnodes);
+  Check_Type(vnodes, T_ARRAY);
   if(NIL_P(vweights)) vweights = rb_hash_new();
   vring = rb_hash_new();
   vsorted_keys = rb_ary_new();
