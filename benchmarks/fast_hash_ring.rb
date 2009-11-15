@@ -6,7 +6,7 @@ require 'fast_hash_ring'
 
 servers = []
 16.times do |i|
-  "127.0.0.#{i+1}:12345"
+  servers << "127.0.0.#{i+1}:12345"
 end
 
 weights = {}
