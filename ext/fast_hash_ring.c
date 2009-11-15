@@ -168,6 +168,14 @@ static VALUE cFastHashRing_initialize(int argc, VALUE *argv, VALUE vself){
   return cFastHashRing_generate_circle(vself);
 }
 
+static VALUE cFastHashRing_sorted_keys(VALUE vself){
+  return rb_iv_get(vself, "@sorted_keys");
+}
+
+static VALUE cFastHashRing_nodes(VALUE vself){
+  return rb_iv_get(vself, "@nodes");
+}
+
 VALUE cFastHashRing;
 
 void Init_fast_hash_ring(){
@@ -179,4 +187,6 @@ void Init_fast_hash_ring(){
   rb_define_method(cFastHashRing, "get_node_pos", cFastHashRing_get_node_pos, 1);
   rb_define_method(cFastHashRing, "iterate_nodes", cFastHashRing_iterate_nodes, 1);
   rb_define_method(cFastHashRing, "gen_key", cFastHashRing_gen_key, 1);
+  rb_define_method(cFastHashRing, "sorted_keys", cFastHashRing_sorted_keys, 0);
+  rb_define_method(cFastHashRing, "nodes", cFastHashRing_nodes, 0);
 }
