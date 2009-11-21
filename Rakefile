@@ -20,7 +20,7 @@ CLEAN.include('pkg', 'tmp')
 
 gemspec = Gem::Specification.new do |s|
   s.name = 'fast_hash_ring'
-  s.version = '0.1'
+  s.version = '0.1.1'
   s.authors = [ 'Flinn' ]
   s.email = 'flinn@actsasflinn.com'
   s.homepage = 'http://github.com/actsasflinn/fast_hash_ring/'
@@ -51,7 +51,7 @@ Rake::GemPackageTask.new(gemspec) do |pkg|
   pkg.need_tar = true
 end
 
-Rake::PackageTask.new('fast_hash_ring', '0.1') do |pkg|
+Rake::PackageTask.new('fast_hash_ring', '0.1.1') do |pkg|
   pkg.need_zip = true
   pkg.package_files = FileList[
     'COPYING',

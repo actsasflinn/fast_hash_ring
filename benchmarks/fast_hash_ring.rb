@@ -1,3 +1,7 @@
+#                           user     system      total        real
+# Hash Ring            44.970000   0.110000  45.080000 ( 45.194632)
+# Fash Hash Ring        1.820000   0.000000   1.820000 (  1.824138)
+
 require 'benchmark'
 require 'rubygems'
 require 'faker'
@@ -15,7 +19,7 @@ weights = {}
 end
 
 keys = []
-10_000.times do |i|
+100_000.times do |i|
   keys << Faker::Name.name
 end
 
