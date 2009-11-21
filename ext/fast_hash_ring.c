@@ -21,6 +21,9 @@ unsigned int hash_val(char *key, int x){
 static VALUE cFastHashRing_hash_val(VALUE vself, VALUE vkey, VALUE vx){
   VALUE vhash;
 
+  Check_Type(vkey, T_STRING);
+  Check_Type(vx, T_FIXNUM);
+
   vhash = INT2NUM(hash_val(RSTRING_PTR(vkey), NUM2INT(vx)));
   return vhash;
 }
@@ -73,6 +76,8 @@ static VALUE cFastHashRing_generate_circle(VALUE vself){
 }
 
 static VALUE cFastHashRing_gen_key(VALUE vself, VALUE vstring_key){
+  Check_Type(vstring_key, T_STRING);
+
   unsigned int key = hash_val(RSTRING_PTR(vstring_key), 0);
 
   return INT2NUM(key);
@@ -80,6 +85,9 @@ static VALUE cFastHashRing_gen_key(VALUE vself, VALUE vstring_key){
 
 static VALUE cFastHashRing_bisect(VALUE vself, VALUE vsorted_keys, VALUE vkey){
   int i, vsorted_keys_len;
+
+  Check_Type(vsorted_keys, T_ARRAY);
+  Check_Type(vkey, T_STRING);
 
   vsorted_keys_len = RARRAY_LEN(vsorted_keys);
   for(i=0;i<vsorted_keys_len;i++){
@@ -93,6 +101,8 @@ static VALUE cFastHashRing_bisect(VALUE vself, VALUE vsorted_keys, VALUE vkey){
 static VALUE cFastHashRing_get_node_pos(VALUE vself, VALUE vstring_key){
   VALUE vring, vsorted_keys, vkey;
   int pos;
+
+  Check_Type(vstring_key, T_STRING);
 
   vring = rb_iv_get(vself, "@ring");
 
@@ -111,6 +121,9 @@ static VALUE cFastHashRing_get_node_pos(VALUE vself, VALUE vstring_key){
 
 static VALUE cFastHashRing_get_node(VALUE vself, VALUE vstring_key){
   VALUE vpos, vring, vsorted_keys, vkey, vnode;
+
+  Check_Type(vstring_key, T_STRING);
+
   vpos = cFastHashRing_get_node_pos(vself, vstring_key);
 
   if(vpos == Qnil) return Qnil;
@@ -127,6 +140,8 @@ static VALUE cFastHashRing_get_node(VALUE vself, VALUE vstring_key){
 static VALUE cFastHashRing_iterate_nodes(VALUE vself, VALUE vstring_key){
   VALUE vreturned_values, vpos, vring, vsorted_keys;
   int i;
+
+  Check_Type(vstring_key, T_STRING);
 
   vreturned_values = rb_ary_new();
   vpos = cFastHashRing_get_node_pos(vself, vstring_key);
