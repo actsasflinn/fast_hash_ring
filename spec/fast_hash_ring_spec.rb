@@ -22,15 +22,15 @@ describe FastHashRing do
     end
 
     it "should return 0 if it less than the first element" do
-      @ring.bisect(@test_array, 5).should eql(0)
+      @ring.send(:bisect, @test_array, 5).should eql(0)
     end
 
     it "should return the index it should go into to maintain order" do
-      @ring.bisect(@test_array, 15).should eql(1)
+      @ring.send(:bisect, @test_array, 15).should eql(1)
     end
 
     it "should return the final index if greater than all items" do
-      @ring.bisect(@test_array, 40).should eql(3)
+      @ring.send(:bisect, @test_array, 40).should eql(3)
     end
   end
 
@@ -149,19 +149,10 @@ describe FastHashRing do
       @ring = FastHashRing.new(['a'])
     end
 
-    it "should return the raw digest for _hash_digest" do
-      random_string = 'some random string'
-
-      m = Digest::MD5.new
-      m.update(random_string)
-      
-      @ring._hash_digest(random_string).should eql(m.digest)
-    end
-
-    it "should match the python output for _hash_val" do
+    it "should match the python output for hash_val" do
       # This output was taken directly from the python library
       py_output = 2830561728
-      ruby_output = @ring._hash_val(@ring._hash_digest('a')) { |x| x+4 }
+      ruby_output = @ring.send(:hash_val, 'a', 4)
 
       ruby_output.should eql(py_output)
     end

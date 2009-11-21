@@ -18,6 +18,13 @@ unsigned int hash_val(char *key, int x){
            digest[0 + x]);
 }
 
+static VALUE cFastHashRing_hash_val(VALUE vself, VALUE vkey, VALUE vx){
+  VALUE vhash;
+
+  vhash = INT2NUM(hash_val(RSTRING_PTR(vkey), NUM2INT(vx)));
+  return vhash;
+}
+
 static VALUE cFastHashRing_generate_circle(VALUE vself){
   VALUE vnodes, vweights, vring, vsorted_keys;
   int i, j, n, vnodes_len;
@@ -71,16 +78,16 @@ static VALUE cFastHashRing_gen_key(VALUE vself, VALUE vstring_key){
   return INT2NUM(key);
 }
 
-int bisect(VALUE vsorted_keys, VALUE vkey){
+static VALUE cFastHashRing_bisect(VALUE vself, VALUE vsorted_keys, VALUE vkey){
   int i, vsorted_keys_len;
 
   vsorted_keys_len = RARRAY_LEN(vsorted_keys);
   for(i=0;i<vsorted_keys_len;i++){
     VALUE vsorted_key = rb_ary_entry(vsorted_keys, i);
-    if (NUM2LONG(vkey) < NUM2LONG(vsorted_key)) return i;
+    if (NUM2LONG(vkey) < NUM2LONG(vsorted_key)) return INT2NUM(i);
   }
 
-  return vsorted_keys_len;
+  return INT2NUM(vsorted_keys_len);
 }
 
 static VALUE cFastHashRing_get_node_pos(VALUE vself, VALUE vstring_key){
@@ -94,7 +101,7 @@ static VALUE cFastHashRing_get_node_pos(VALUE vself, VALUE vstring_key){
   vsorted_keys = rb_iv_get(vself, "@sorted_keys");
 
   vkey = cFastHashRing_gen_key(vself, vstring_key);
-  pos = bisect(vsorted_keys, vkey);
+  pos = NUM2INT(cFastHashRing_bisect(vself, vsorted_keys, vkey));
 
   if(pos == RARRAY_LEN(vsorted_keys))
     return INT2NUM(0);
@@ -189,4 +196,8 @@ void Init_fast_hash_ring(){
   rb_define_method(cFastHashRing, "gen_key", cFastHashRing_gen_key, 1);
   rb_define_method(cFastHashRing, "sorted_keys", cFastHashRing_sorted_keys, 0);
   rb_define_method(cFastHashRing, "nodes", cFastHashRing_nodes, 0);
+
+  // Make specs work
+  rb_define_protected_method(cFastHashRing, "hash_val", cFastHashRing_hash_val, 2);
+  rb_define_protected_method(cFastHashRing, "bisect", cFastHashRing_bisect, 2);
 }
