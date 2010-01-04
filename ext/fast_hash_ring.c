@@ -87,7 +87,7 @@ static VALUE cFastHashRing_bisect(VALUE vself, VALUE vsorted_keys, VALUE vkey){
   int i, vsorted_keys_len;
 
   Check_Type(vsorted_keys, T_ARRAY);
-  Check_Type(vkey, T_STRING);
+  Check_Type(vkey, T_FIXNUM);
 
   vsorted_keys_len = RARRAY_LEN(vsorted_keys);
   for(i=0;i<vsorted_keys_len;i++){
@@ -178,6 +178,8 @@ static VALUE cFastHashRing_initialize(int argc, VALUE *argv, VALUE vself){
   if(TYPE(vnodes) != T_ARRAY) vnodes = rb_ary_new3(1, vnodes);
   Check_Type(vnodes, T_ARRAY);
   if(NIL_P(vweights)) vweights = rb_hash_new();
+  Check_Type(vweights, T_HASH);
+
   vring = rb_hash_new();
   vsorted_keys = rb_ary_new();
 
